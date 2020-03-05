@@ -68,14 +68,10 @@ function checkWord( selectedWord, typedword ) {
 }
 
 ComfyJS.onChat = ( user, message,flags, self, extra ) => {
-  if (user.toLowerCase() == "streamelements"){
-    return
-  }
-  else if( checkWord( selectedWord.toLowerCase(), message.toLowerCase().split( " " )[ 0 ] ) ) {
+  if( checkWord( selectedWord.toLowerCase(), message.split( " " )[ 0 ] ) ) {
     if( !isSolved && selectedWord === message.split( " " )[ 0 ] ) {
       isSolved = true;
       console.log(user)
-      document.querySelector( ".lastWord" ).innerText = "Last Word: " + selectedWord;
       document.querySelector( ".recentWinner" ).innerText = "Last Winner: " + user;
       addpoints(user, 250);
       setTimeout( () => {
