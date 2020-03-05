@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Words with Gravy / By ThatGravyBoat</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <script src="words.js"></script>
+    <script src="comfy.min.js"></script>
+    <style>
+      body {
+        background-color: transparent;
+        font-family: 'Roboto', sans-serif;
+        color: white;
+        line-height: 0.1;
+        text-transform: uppercase;
+      }
+      .answer {
+        background-image: url(./overlay.png);
+        width: 800px;
+        height: 185;
+        text-align: center;
+      }
+      .words {
+        padding-top: 40px;
+      }
+      .recent {
+        float: left;
+        width: 60%;
+      }
+      .last {
+        float: right;
+        width: 60%;
+      }
+      .recentlast{
+        padding-top: 20px;
+        font-weight: bold;
+      }
+      #answer {
+        padding-top: 20px;
+        font-size: 40px;
+        line-height: 0px;
+      }
+      #define {
+        padding-top: 5px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="answer">
+      <div class="words">
+        <h1 id="answer"></h1>
+        <h1 id="define"></h1>
+        <div class="recentlast"><span class="recent"><u class="recentWinner">Last Winner: N/A</u></span><span class="last"><u class="lastWord">Last Word: N/A</u></span></div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
