@@ -1,12 +1,13 @@
 let params = new URLSearchParams( location.search );
-var gameDifficulty = 2;
 var isSolved = false;
-var words = wordList.split( "," );
+var wordLists = wordList.replace(/ /g, '');
+var words = wordLists.split( "," );
 var selectedWord;
 var typedword = "";
 var revealedWord = "";
 var define = document.querySelector( "#define" );
 var answer = document.querySelector( "#answer" );
+var dailySolvedCount = 0;
 
 function addpoints(name, points) {
 
@@ -23,43 +24,39 @@ function addpoints(name, points) {
     xhttp.send();
 }
 
-function newWord( difficulty ) {
-  var wordsByDifficulty = words.filter( x => x.length >= 3 && x.length <= ( difficulty + 5 ) );
-  selectedWord = wordsByDifficulty[ Math.floor( Math.random() * wordsByDifficulty.length ) ];
+function newWord() { 
+  selectedWord = words[ Math.floor( Math.random() * words.length ) ];
   typedword = "";
   revealedWord = "_".repeat( selectedWord.length );
   isSolved = false;
   console.log(selectedWord)
   define.innerText = ''
   answer.innerText = revealedWord.split( "" ).join( " " );
-
-    if (selectedWord === 'gravy'){
-        setTimeout( () => {
-            define.innerText = 'Hes the god that made this ;)'
-        }, 10000 );
-    }
-    if (selectedWord === 'ego'){
-        setTimeout( () => {
-            define.innerText = 'Auri has one!'
-        }, 10000 );
-    }
-    if (selectedWord === 'bitch'){
-      setTimeout( () => {
+  setTimeout( () => {
+    switch (selectedWord) {
+      case 'gravy':
+        define.innerText = 'Hes the god that made this ;)'
+        break;
+      case 'ego':
+          define.innerText = 'Auri has one!'
+        break;
+      case 'bitch':
           define.innerText = 'Jax is one!'
-      }, 10000 );
-  }
+        break;
+    }
+  }, 10000 );
 }
 
-newWord( gameDifficulty );
+newWord();
 
 function checkWord( selectedWord, typedword ) {
   for( var i = 0; i < selectedWord.length && i < typedword.length; i++ ) {
-    // console.log( i, selectedWord[ i ], typedword[ i ] );
+    console.log( i, selectedWord[ i ], typedword[ i ] );
     if( selectedWord[ i ] === typedword[ i ] ) {
       var parts = revealedWord.split( "" );
       parts[ i ] = selectedWord[ i ];
       revealedWord = parts.join( "" );
-      // console.log( revealedWord );
+      console.log( revealedWord );
       answer.innerText = revealedWord.split( "" ).join( " " );
     }
   }
@@ -68,32 +65,38 @@ function checkWord( selectedWord, typedword ) {
 }
 
 ComfyJS.onChat = ( user, message,flags, self, extra ) => {
-  if( checkWord( selectedWord.toLowerCase(), message.split( " " )[ 0 ] ) ) {
-    if( !isSolved && selectedWord === message.split( " " )[ 0 ] ) {
+  if( checkWord( selectedWord.toLowerCase(), message.toLowerCase().split( " " )[ 0 ] ) ) {
+    if(!isSolved) {
       isSolved = true;
+      dailySolvedCount++;
       console.log(user)
       document.querySelector( ".recentWinner" ).innerText = "Last Winner: " + user;
       addpoints(user, 250);
       setTimeout( () => {
-        newWord( gameDifficulty );
+        newWord();
       }, 3000 );
     }
   }
   if (extra.customRewardId == "f18a863c-146e-4f0f-9357-cd0456c136a4") {
-    ComfyJS.Say( "/me " + user + " has skipped the word!" );
-    newWord( gameDifficulty );
+    ComfyJS.Say( `/me ${user} has skipped the word!`);
+    ComfyJS.Say( `/me the word skipped was ${selectedWord}.`);
+    newWord();
   }
 }
 
 ComfyJS.onCommand = ( user, command, message, flags, extra ) => {
+  if(command === "solvedcount" ) {
+    ComfyJS.Say( `@${user} todays daily solved word count is ${dailySolvedCount}.` );
+  }
   if( flags.broadcaster && command === "newword" ) {
-    ComfyJS.Say( "/me The word was " + selectedWord );
-    newWord( gameDifficulty );
+    ComfyJS.Say( `/me The word was ${selectedWord}.` );
+    newWord();
   }
   if (extra.customRewardId == "f18a863c-146e-4f0f-9357-cd0456c136a4") {
-    ComfyJS.Say( "/me " + user + " has skipped the word!" );
-    newWord( gameDifficulty );
+    ComfyJS.Say( `/me ${user} has skipped the word!` );
+    ComfyJS.Say( `/me the word skipped was ${selectedWord}.`);
+    newWord();
   }
 }
 
-ComfyJS.Init( "BotDagger", "oauth:" + params.get( "oauth" ),  "JaxDagger" );
+ComfyJS.Init( params.get( "botname" ), "oauth:" + params.get( "oauth" ),  params.get( "channel" ) );
