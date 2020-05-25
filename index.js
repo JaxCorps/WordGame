@@ -72,6 +72,7 @@ ComfyJS.onChat = ( user, message,flags, self, extra ) => {
       console.log(user)
       document.querySelector( ".recentWinner" ).innerText = "Last Winner: " + user;
       addpoints(user, 250);
+      ComfyJS.Say(`${user} has solved the word!`);
       setTimeout( () => {
         newWord();
       }, 3000 );
