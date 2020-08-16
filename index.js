@@ -52,12 +52,12 @@ newWord();
 
 function checkWord( selectedWord, typedword ) {
   for( var i = 0; i < selectedWord.length && i < typedword.length; i++ ) {
-    console.log( i, selectedWord[ i ], typedword[ i ] );
+    //console.log( i, selectedWord[ i ], typedword[ i ] );
     if( selectedWord[ i ] === typedword[ i ] ) {
       var parts = revealedWord.split( "" );
       parts[ i ] = selectedWord[ i ];
       revealedWord = parts.join( "" );
-      console.log( revealedWord );
+      //console.log( revealedWord );
       answer.innerText = revealedWord.split( "" ).join( " " );
     }
   }
@@ -80,7 +80,7 @@ ComfyJS.onChat = ( user, message,flags, self, extra ) => {
     if(!isSolved) {
       isSolved = true;
       dailySolvedCount++;
-      console.log(user)
+      //console.log(user)
       document.querySelector( ".recentWinner" ).innerText = "Last Winner: " + user;
       addpoints(user, selectedWord.length * 75);
       ComfyJS.Say(`${user} has solved the word!`);
