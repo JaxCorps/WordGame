@@ -158,4 +158,4 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
   }
 }
 
-ComfyJS.Init("Pieloafff", "oauth:if4m9t045evrnlx8g1agqhz93rqll3", "Pieloaf");
+ComfyJS.Init(params.get("botname"), "oauth:" + params.get("oauth"), params.get("channel"));
